@@ -3,16 +3,27 @@ declare(strict_types=1);
 
 namespace App\Model\User\Entity\User;
 
+use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
+#[ORM\Entity]
+#[ORM\Table(name: "user_user_networks", uniqueConstraints: [
+    new ORM\UniqueConstraint(columns: ["network", "identity"])
+])]
 class Network
 {
+    #[ORM\Column(type: "guid")]
+    #[ORM\Id]
     private string $id;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "networks")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private User $user;
 
+    #[ORM\Column(type: "string", length: 32, nullable: true)]
     private string $network;
 
+    #[ORM\Column(type: "string", length: 32, nullable: true)]
     private string $identity;
 
     /**
@@ -28,22 +39,6 @@ class Network
         $this->identity = $identity;
     }
 
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
     public function isForNetwork(string $network): bool
     {
         return $this->network === $network;
@@ -57,16 +52,6 @@ class Network
     public function getIdentity(): string
     {
         return $this->identity;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
 }

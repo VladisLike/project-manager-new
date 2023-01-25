@@ -7,4 +7,5 @@ class Command
 {
     public string $email;
 
+
 }

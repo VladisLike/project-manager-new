@@ -15,18 +15,18 @@ use App\Model\User\Service\PasswordHasher;
 class Handler
 {
 
-    private UserRepository $users;
-    private PasswordHasher $hasher;
-    private SignUpConfirmTokenizer $tokenizer;
-    private ConfirmTokenSender $sender;
-    private Flusher $flusher;
+    private $users;
+    private $hasher;
+    private $tokenizer;
+    private $sender;
+    private $flusher;
 
     /**
      * @param UserRepository $users
      * @param PasswordHasher $hasher
      * @param SignUpConfirmTokenizer $tokenizer
      * @param ConfirmTokenSender $sender
-     * @param Flusher $flusher
+     * @param Flusher $flasher
      */
     public function __construct(
         UserRepository         $users,
@@ -51,12 +51,9 @@ class Handler
             throw new \DomainException('User already exists.');
         }
 
-        $user = new User(
+        $user = User::signUpByEmail(
             Id::next(),
-            new \DateTimeImmutable()
-        );
-
-        $user->signUpByEmail(
+            new \DateTimeImmutable(),
             $email,
             $this->hasher->hash($command->password),
             $token = $this->tokenizer->generate()

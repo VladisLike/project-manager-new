@@ -17,4 +17,5 @@ class Command
         $this->token = $token;
     }
 
+
 }

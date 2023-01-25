@@ -8,7 +8,6 @@ use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Service\ResetTokenizer;
 use App\Model\User\Service\ResetTokenSender;
-use DateTimeImmutable;
 
 class Handler
 {
@@ -37,7 +36,7 @@ class Handler
 
         $user->requestPasswordReset(
             $this->tokenizer->generate(),
-            new DateTimeImmutable()
+            new \DateTimeImmutable()
         );
 
         $this->flusher->flush();
