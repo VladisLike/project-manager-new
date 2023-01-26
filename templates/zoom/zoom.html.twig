@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zoom{% endblock %}
+
+{% block body %}
+    <h1>Zoom integration!</h1>
+    <table>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Meeting ID: {{ data.id }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Topic: {{ data.topic }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Meeting Password: {{ data.password }}
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td height="20"></td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Join URL: {{ data.join_url }}
+                </p>
+                <a href="{{ data.join_url }}">Start The Meetings</a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
