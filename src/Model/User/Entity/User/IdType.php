@@ -10,12 +10,12 @@ class IdType extends GuidType
 {
     public const NAME = 'user_user_id';
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         return $value instanceof Id ? $value->getValue() : $value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Id
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?Id
     {
         return !empty($value) ? new Id($value) : null;
     }

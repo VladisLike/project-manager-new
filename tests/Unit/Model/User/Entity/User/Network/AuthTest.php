@@ -14,7 +14,7 @@ class AuthTest extends TestCase
     {
         $user = User::signUpByNetwork(
             $id = Id::next(),
-            $date = new \DateTimeImmutable(),
+            $date = new \DateTimeImmutable('now'),
             $network = 'vk',
             $identity = '0000001'
         );

@@ -7,4 +7,13 @@ class Command
 {
     public string $token;
 
+    /**
+     * @param string $token
+     */
+    public function __construct(string $token)
+    {
+        $this->token = $token;
+    }
+
+
 }

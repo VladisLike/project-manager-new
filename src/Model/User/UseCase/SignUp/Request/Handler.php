@@ -8,31 +8,31 @@ use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
-use App\Model\User\Service\SignUpConfirmTokenizer;
-use App\Model\User\Service\ConfirmTokenSender;
+use App\Model\User\Service\Mailer\MailerSenderInterface;
 use App\Model\User\Service\PasswordHasher;
+use App\Model\User\Service\SignUpConfirmTokenizer;
 
 class Handler
 {
 
-    private $users;
-    private $hasher;
-    private $tokenizer;
-    private $sender;
-    private $flusher;
+    private UserRepository $users;
+    private PasswordHasher $hasher;
+    private SignUpConfirmTokenizer $tokenizer;
+    private MailerSenderInterface $sender;
+    private Flusher $flusher;
 
     /**
      * @param UserRepository $users
      * @param PasswordHasher $hasher
      * @param SignUpConfirmTokenizer $tokenizer
-     * @param ConfirmTokenSender $sender
-     * @param Flusher $flasher
+     * @param MailerSenderInterface $sender
+     * @param Flusher $flusher
      */
     public function __construct(
         UserRepository         $users,
         PasswordHasher         $hasher,
         SignUpConfirmTokenizer $tokenizer,
-        ConfirmTokenSender     $sender,
+        MailerSenderInterface  $sender,
         Flusher                $flusher)
     {
         $this->users = $users;
@@ -53,7 +53,7 @@ class Handler
 
         $user = User::signUpByEmail(
             Id::next(),
-            new \DateTimeImmutable(),
+            new \DateTimeImmutable('now'),
             $email,
             $this->hasher->hash($command->password),
             $token = $this->tokenizer->generate()
@@ -61,7 +61,7 @@ class Handler
 
         $this->users->add($user);
 
-        $this->sender->send($email, $token);
+        $this->sender->sendConfirmToken($email, $token);
 
         $this->flusher->flush();
     }

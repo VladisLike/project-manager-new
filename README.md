@@ -33,7 +33,7 @@ bin/console doctrine:database:create
 #### Run/update database dump
 
 ```bash
-bin/console d:s:u --force
+bin/console doctrine:migrations:migrate
 ```
 
 Run server in browser: http://localhost:8088

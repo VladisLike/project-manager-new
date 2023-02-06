@@ -11,7 +11,7 @@ class RequestTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('now');
         $token = new ResetToken('token', $now->modify('+1 day'));
 
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
@@ -23,7 +23,7 @@ class RequestTest extends TestCase
 
     public function testAlready(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('now');
         $token = new ResetToken('token', $now->modify('+1 day'));
 
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
@@ -36,7 +36,7 @@ class RequestTest extends TestCase
 
     public function testExpired(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('now');
 
         $user = (new UserBuilder())->viaEmail()->confirmed()->build();
 
@@ -53,7 +53,7 @@ class RequestTest extends TestCase
 
     public function testNotConfirmed(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('now');
         $token = new ResetToken('token', $now->modify('+1 day'));
 
         $user = (new UserBuilder())->viaEmail()->build();
@@ -64,7 +64,7 @@ class RequestTest extends TestCase
 
     public function testWithoutEmail(): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new \DateTimeImmutable('now');
         $token = new ResetToken('token', $now->modify('+1 day'));
 
         $user = (new UserBuilder())->viaNetwork()->build();

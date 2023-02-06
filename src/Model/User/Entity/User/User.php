@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\User\Entity\User;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,7 +18,7 @@ class User
 {
     private const STATUS_NEW = 'new';
     private const STATUS_WAIT = 'wait';
-    private const STATUS_ACTIVE = 'active';
+    public const STATUS_ACTIVE = 'active';
 
     #[ORM\Column(type: "user_user_id")]
     #[ORM\Id]
@@ -45,7 +46,7 @@ class User
     private Role $role;
 
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Network::class, cascade: ["persist"], orphanRemoval: true)]
-    private array|ArrayCollection $networks;
+    private array|Collection $networks;
 
     /**
      * @param Id $id

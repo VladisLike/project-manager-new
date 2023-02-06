@@ -6,23 +6,23 @@ namespace App\Model\User\UseCase\Reset\Request;
 use App\Model\Flusher;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\UserRepository;
+use App\Model\User\Service\Mailer\MailerSenderInterface;
 use App\Model\User\Service\ResetTokenizer;
-use App\Model\User\Service\ResetTokenSender;
 
 class Handler
 {
     private UserRepository $users;
     private ResetTokenizer $tokenizer;
     private Flusher $flusher;
-    private ResetTokenSender $sender;
+    private MailerSenderInterface $sender;
 
     /**
      * @param UserRepository $users
      * @param ResetTokenizer $tokenizer
      * @param Flusher $flusher
-     * @param ResetTokenSender $sender
+     * @param MailerSenderInterface $sender
      */
-    public function __construct(UserRepository $users, ResetTokenizer $tokenizer, Flusher $flusher, ResetTokenSender $sender)
+    public function __construct(UserRepository $users, ResetTokenizer $tokenizer, Flusher $flusher, MailerSenderInterface $sender)
     {
         $this->users = $users;
         $this->tokenizer = $tokenizer;
@@ -36,12 +36,12 @@ class Handler
 
         $user->requestPasswordReset(
             $this->tokenizer->generate(),
-            new \DateTimeImmutable()
+            new \DateTimeImmutable('now')
         );
 
         $this->flusher->flush();
 
-        $this->sender->send($user->getEmail(), $user->getResetToken());
+        $this->sender->sendResetToken($user->getEmail(), $user->getResetToken());
     }
 
 

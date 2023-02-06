@@ -27,7 +27,7 @@ class Handler
 
         $user = User::signUpByNetwork(
             Id::next(),
-            new \DateTimeImmutable(),
+            new \DateTimeImmutable('now'),
             $command->network,
             $command->identity
         );

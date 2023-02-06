@@ -9,4 +9,14 @@ class Command
 
     public string $identity;
 
+    /**
+     * @param string $network
+     * @param string $identity
+     */
+    public function __construct(string $network, string $identity)
+    {
+        $this->network = $network;
+        $this->identity = $identity;
+    }
+
 }

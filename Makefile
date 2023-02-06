@@ -19,3 +19,6 @@ docker-build:
 
 docker-exec-bash:
 	docker exec -it crud_php-fpm bash
+
+manager-wait-db:
+	until docker-compose exec -T database pg_isready --timeout=0 --dbname=app ; do sleep 1 ; done
