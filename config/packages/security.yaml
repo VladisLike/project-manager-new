@@ -15,7 +15,8 @@ security:
         main:
             lazy: true
             user_checker: App\Security\UserChecker
-            custom_authenticator: App\Security\LoginFormAuthenticator
+            custom_authenticator:
+                - App\Security\LoginFormAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
@@ -24,16 +25,8 @@ security:
                 path: app_logout
 
     access_control:
-#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/oauth, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/signup, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/, roles: ROLE_USER }
-
-when@test:
-    security:
-        encoders:
-            App\Security\UserIdentity: argon2i
-        firewalls:
-            main:
-                http_basic: ~
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/oauth, roles: PUBLIC_ACCESS }
+        - { path: ^/signup, roles: PUBLIC_ACCESS }
+        - { path: ^/reset, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: ROLE_USER }

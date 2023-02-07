@@ -24,16 +24,9 @@ rm -r var/cache
 
 ### For development mode:
 
-#### If database doesn't exist:
-
+#### Run into /app#
 ```bash
-bin/console doctrine:database:create
-```
-
-#### Run/update database dump
-
-```bash
-bin/console doctrine:migrations:migrate
+make app-run
 ```
 
 Run server in browser: http://localhost:8088

@@ -16,6 +16,12 @@ class UserProvider implements UserProviderInterface
     {
     }
 
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $user = $this->loadUser($identifier);
+        return self::identityByUser($user, $identifier);
+    }
+
     public function refreshUser(UserInterface $identity): UserInterface
     {
         $user = $this->loadUser($identity->getUsername());
@@ -51,11 +57,5 @@ class UserProvider implements UserProviderInterface
             $user->role,
             $user->status
         );
-    }
-
-    public function loadUserByIdentifier(string $identifier): UserInterface
-    {
-        $user = $this->loadUser($identifier);
-        return self::identityByUser($user, $identifier);
     }
 }
