@@ -30,9 +30,9 @@ run: composer-install assets-install manager-dump manager-admin manager-ready
 
 composer-install:
 	docker exec -it crud_php-fpm composer install
-
 assets-install:
 	docker-compose run --rm node npm install
+	docker-compose run --rm node npm rebuild node-sass
 
 manager-dump:
 	docker exec -it crud_php-fpm bin/console doctrine:migrations:migrate
@@ -43,10 +43,7 @@ manager-admin:
 manager-ready:
 	docker run --rm -v ${PWD}/:/app --workdir=/app alpine touch .ready
 
-
 run-dev: manager-assets-dev
 
 manager-assets-dev:
 	docker-compose run --rm crud_node npm run dev
-
-

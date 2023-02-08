@@ -60,7 +60,7 @@ class CreateAdminUserCommand extends Command
         $helper = $this->getHelper('question');
 
         $emailConstraint = new EmailConstraint();
-        $email = $helper->ask($input, $output, new Question("Create user Admin.\nEmail: "));
+        $email = $helper->ask($input, $output, new Question("\n\nCreate user Admin.\nEmail: "));
         if ($email === null || \count($this->validator->validate($email, $emailConstraint)) > 0) {
             $output->writeln("<error>Invalid email</error>");
 
