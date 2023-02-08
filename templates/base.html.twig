@@ -9,62 +9,79 @@
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-<header class="app-header navbar">
-    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="{{ path('home') }}">
-        <img class="navbar-brand-full" src="{{ asset('img/manager-logo.jpg') }}" width="115" height="30"
-             alt="Logo">
-        <img class="navbar-brand-minimized" src="{{ asset('img/manager-logo.jpg') }}" width="30" height="30"
-             alt="Logo">
-    </a>
-    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <ul class="nav navbar-nav ml-auto mr-4">
-        <li class="nav-item dropdown">
-            <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-               aria-expanded="false">
-                {{ app.user.username }}
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-header text-center">
-                    <strong>Account</strong>
+<body>
+<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <header class="header header-sticky mb-4">
+        <div class="container-fluid">
+            <button class="header-toggler px-md-0 me-md-3" type="button"
+                    onclick="if (!window.__cfRLUnblockHandlers) return false; coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                <div class="icon icon-lg">
+                    <span><i class="cil-menu"></i></span>
                 </div>
-                <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-lock"></i> Logout</a>
-                <a class="dropdown-item" href="{{ path('auth.reset') }}"><i class="fa fa-envelope"></i> Reset password</a>
-            </div>
-        </li>
-    </ul>
-</header>
-<div class="app-body">
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('home') }}">
-                        <i class="nav-icon icon-speedometer"></i> Dashboard
+            </button>
+            <a class="header-brand d-md-none" href="#">
+                <svg width="118" height="46" alt="CoreUI Logo">
+                    <use xlink:href="assets/brand/coreui.svg#full"></use>
+                </svg>
+            </a>
+            <ul class="header-nav ms-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        {{ app.user.username }}
+                        {#                    <div class="avatar avatar-md"> #}
+                        {#                        <img class="avatar-img" #}
+                        {#                             src="https://coreui.io/demos/bootstrap/4.2/free/assets/img/avatars/2.jpg" #}
+                        {#                             alt="{{ app.user.username }}"> #}
+                        {#                    </div> #}
                     </a>
+                    <div class="dropdown-menu dropdown-menu-end pt-0">
+                        <div class="dropdown-header bg-light py-2">
+                            <div class="fw-semibold">Account</div>
+                        </div>
+{#                        <a class="dropdown-item" href="#">#}
+{#                            <div class="icon me-2">#}
+{#                                <i class="cil-bell"></i>#}
+{#                            </div>#}
+{#                            Updates#}
+{#                            <span class="badge badge-sm bg-info ms-2">42</span>#}
+{#                        </a>#}
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('auth.reset') }}">
+                            <div class="icon me-2">
+                                <i class="cil-loop-circular"></i>
+                            </div>
+                            Reset Password
+                        </a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <div class="icon me-2">
+                                <i class="cil-account-logout"></i>
+                            </div>
+                            Logout
+                        </a>
+                    </div>
                 </li>
             </ul>
-        </nav>
-        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-    </div>
-    <main class="main">
-        {% block breadcrumbs %}{% endblock %}
-        <div class="container-fluid">
-            {% include '_flashes.html.twig' %}
-            {% block body %}{% endblock %}
         </div>
-    </main>
-</div>
-<footer class="app-footer">
-    <div>
-        <span>© {{ "now"|date("Y") }} All rights reserved</span>
+        <div class="header-divider"></div>
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb">
+                {% block breadcrumbs %}{% endblock %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="body flex-grow-1 px-3">
+        {% include '_flashes.html.twig' %}
+        {% block body %}{% endblock %}
     </div>
-</footer>
+    <footer class="footer">
+        <div>
+            <span>© {{ "now"|date("Y") }} All rights reserved</span>
+        </div>
+    </footer>
+</div>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

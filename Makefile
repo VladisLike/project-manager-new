@@ -46,4 +46,4 @@ manager-ready:
 run-dev: manager-assets-dev
 
 manager-assets-dev:
-	docker-compose run --rm crud_node npm run dev
+	docker-compose run --rm node npm run dev

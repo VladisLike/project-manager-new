@@ -41,7 +41,8 @@ class UserFetcher
             ->where("email = '$email'")
             ->executeQuery()->fetchAssociative();
 
-        return $this->intoAuthView($stmt) ?: null;
+
+        return $stmt ? $this->intoAuthView($stmt) : null;
     }
 
     /**
@@ -69,13 +70,10 @@ class UserFetcher
             ->setParameter(':identity', $identity)
             ->executeQuery()->fetchAssociative();
 
-        dump($stmt);
-        exit();
-
-        return $this->intoAuthView($stmt) ?: null;
+        return $stmt ? $this->intoAuthView($stmt) : null;
     }
 
-    private function intoAuthView(array $temp): AuthView
+    private function intoAuthView($temp): AuthView
     {
         return new AuthView($temp['id'], $temp['email'], $temp['password_hash'], $temp['role'], $temp['status']);
     }
