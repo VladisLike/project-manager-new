@@ -1,16 +1,45 @@
-{% extends 'base.html.twig' %}
+{% extends 'auth.html.twig' %}
 
 {% block title %}Password Reset{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card mb-4 mx-4">
+                    <div class="card-body p-4">
+                        {% include '_flashes.html.twig' %}
+                        <div class="container">
+                            <div class="row text-right">
+                                <div class="col">
+                                    <a class="btn btn-primary px-4" href="{{ path('home') }}">
+                                        <span>Back</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h1>Password Reset</h1>
 
-    <h1>Password Reset</h1>
+                        {{ form_start(form) }}
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Change Password</button>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fa fa-envelope-open"></i></span>
+                            {{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-block btn-lg btn-success">Reset Password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {{ form_end(form) }}
-
 {% endblock %}
