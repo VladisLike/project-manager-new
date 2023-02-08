@@ -52,7 +52,14 @@ services:
         image: mailhog/mailhog
         ports:
             - "8089:8025"
+    redis:
+        container_name: crud_redis
+        image: redis:6.0-alpine
+        volumes:
+            - redis:/data
+        command: redis-server --requirepass secret
 
 volumes:
     database:
+    redis:
 
