@@ -23,6 +23,19 @@ services:
         depends_on:
             - database
             - mailer
+    node-watch:
+        container_name: crud_node-watch
+        image: node:latest
+        volumes:
+            - ./:/app
+        working_dir: /app
+        command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && npm run watch"
+    node:
+        container_name: crud_node
+        image: node:latest
+        volumes:
+            - ./:/app
+        working_dir: /app
     database:
         container_name: crud_database
         image: postgres:15.1-alpine
@@ -35,6 +48,7 @@ services:
         ports:
             - "54323:5432"
     mailer:
+        container_name: crud_mailer
         image: mailhog/mailhog
         ports:
             - "8089:8025"
