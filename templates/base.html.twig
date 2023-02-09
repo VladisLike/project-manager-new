@@ -10,20 +10,44 @@
     {% endblock %}
 </head>
 <body>
-<div class="wrapper d-flex flex-column min-vh-100 bg-light">
-    <header class="header header-sticky mb-4">
-        <div class="container-fluid">
-            <button class="header-toggler px-md-0 me-md-3" type="button"
-                    onclick="if (!window.__cfRLUnblockHandlers) return false; coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-                <div class="icon icon-lg">
-                    <span><i class="cil-menu"></i></span>
+<div class="sidebar sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+        <div class="sidebar-brand-full" alt="Logo">
+            <span><i class="cil-3d"></i> </span>
+            MANAGER
+        </div>
+    </div>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="init">
+        <div class="simplebar-wrapper">
+            <div class="simplebar-height-auto-observer-wrapper">
+                <div class="simplebar-height-auto-observer"></div>
+            </div>
+            <div class="simplebar-mask">
+                <div class="simplebar-offset">
+                    <div class="simplebar-content-wrapper" tabindex="0" role="region"
+                         aria-label="scrollable content">
+                        <div class="simplebar-content">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('home') }}">
+                                    <div class="nav-icon">
+                                        <span><i class="cil-speedometer"></i></span>
+                                    </div>
+                                    Dashboard
+                                </a>
+                            </li>
+                        </div>
+                    </div>
                 </div>
-            </button>
-            <a class="header-brand d-md-none" href="#">
-                <svg width="118" height="46" alt="CoreUI Logo">
-                    <use xlink:href="assets/brand/coreui.svg#full"></use>
-                </svg>
-            </a>
+            </div>
+            <div class="simplebar-placeholder"></div>
+        </div>
+    </ul>
+    {#    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button> #}
+</div>
+<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <header class="header header-fi mb-4">
+        <div class="container-fluid">
+            <div class="header-toggler px-md-0 me-md-3"></div>
             <ul class="header-nav ms-3">
                 <li class="nav-item dropdown">
                     <a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -39,13 +63,13 @@
                         <div class="dropdown-header bg-light py-2">
                             <div class="fw-semibold">Account</div>
                         </div>
-{#                        <a class="dropdown-item" href="#">#}
-{#                            <div class="icon me-2">#}
-{#                                <i class="cil-bell"></i>#}
-{#                            </div>#}
-{#                            Updates#}
-{#                            <span class="badge badge-sm bg-info ms-2">42</span>#}
-{#                        </a>#}
+                        {#                        <a class="dropdown-item" href="#"> #}
+                        {#                            <div class="icon me-2"> #}
+                        {#                                <i class="cil-bell"></i> #}
+                        {#                            </div> #}
+                        {#                            Updates #}
+                        {#                            <span class="badge badge-sm bg-info ms-2">42</span> #}
+                        {#                        </a> #}
 
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('auth.reset') }}">
@@ -71,7 +95,6 @@
             </nav>
         </div>
     </header>
-
     <div class="body flex-grow-1 px-3">
         {% include '_flashes.html.twig' %}
         {% block body %}{% endblock %}

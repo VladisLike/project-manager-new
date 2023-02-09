@@ -1,4 +1,8 @@
-@import "variables";
+//@import "variables";
 @import "@coreui/icons";
 @import "simplebar/dist/simplebar.min.css";
 @import "~@coreui/coreui/scss/coreui";
+
+.wrapper {
+  padding-left: var(--cui-sidebar-occupy-start, 0);
+}
