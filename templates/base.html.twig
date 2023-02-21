@@ -11,38 +11,20 @@
 </head>
 <body>
 <div class="sidebar sidebar-fixed" id="sidebar">
+
     <div class="sidebar-brand d-none d-md-flex">
         <div class="sidebar-brand-full" alt="Logo">
-            <span><i class="cil-3d"></i> </span>
+            <span><i class="cib-codeigniter"></i></span>
             MANAGER
         </div>
-    </div>
-    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="init">
-        <div class="simplebar-wrapper">
-            <div class="simplebar-height-auto-observer-wrapper">
-                <div class="simplebar-height-auto-observer"></div>
-            </div>
-            <div class="simplebar-mask">
-                <div class="simplebar-offset">
-                    <div class="simplebar-content-wrapper" tabindex="0" role="region"
-                         aria-label="scrollable content">
-                        <div class="simplebar-content">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('home') }}">
-                                    <div class="nav-icon">
-                                        <span><i class="cil-speedometer"></i></span>
-                                    </div>
-                                    Dashboard
-                                </a>
-                            </li>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="simplebar-placeholder"></div>
+        <div class="sidebar-brand-narrow" alt="Logo">
+            <span><i class="cib-codeigniter"></i></span>
         </div>
-    </ul>
-    {#    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button> #}
+    </div>
+
+
+    {{ knp_menu_render('sidebar', {'currentClass': 'active'}) }}
+    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
 <div class="wrapper d-flex flex-column min-vh-100 bg-light">
     <header class="header header-fi mb-4">
@@ -63,21 +45,23 @@
                         <div class="dropdown-header bg-light py-2">
                             <div class="fw-semibold">Account</div>
                         </div>
-                        {#                        <a class="dropdown-item" href="#"> #}
-                        {#                            <div class="icon me-2"> #}
-                        {#                                <i class="cil-bell"></i> #}
-                        {#                            </div> #}
-                        {#                            Updates #}
-                        {#                            <span class="badge badge-sm bg-info ms-2">42</span> #}
-                        {#                        </a> #}
+                        <a class="dropdown-item" href="{{ path('profile') }}">
+                            <div class="icon me-2">
+                                <i class="cil-user"></i>
+                            </div>
+                            Profile
+                        </a>
 
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-header bg-light py-2">
+                            <div class="fw-semibold">Settings</div>
+                        </div>
                         <a class="dropdown-item" href="{{ path('auth.reset') }}">
                             <div class="icon me-2">
                                 <i class="cil-loop-circular"></i>
                             </div>
                             Reset Password
                         </a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">
                             <div class="icon me-2">
                                 <i class="cil-account-logout"></i>
@@ -102,6 +86,9 @@
     <footer class="footer">
         <div>
             <span>© {{ "now"|date("Y") }} All rights reserved</span>
+        </div>
+        <div class="ms-auto">Template by&nbsp;
+            <a href="https://coreui.io/demos/bootstrap/4.2/free/" target="_blank">CoreUI 4.2 free</a>
         </div>
     </footer>
 </div>

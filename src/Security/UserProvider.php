@@ -5,7 +5,11 @@ namespace App\Security;
 
 use App\ReadModel\User\AuthView;
 use App\ReadModel\User\UserFetcher;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception\InvalidFieldNameException;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -20,6 +24,12 @@ class UserProvider implements UserProviderInterface
     {
         $user = $this->loadUser($identifier);
         return self::identityByUser($user, $identifier);
+    }
+
+    public function loadUserByUsername($username): UserInterface
+    {
+        $user = $this->loadUser($username);
+        return self::identityByUser($user, $username);
     }
 
     public function refreshUser(UserInterface $identity): UserInterface
@@ -45,15 +55,16 @@ class UserProvider implements UserProviderInterface
             return $user;
         }
 
-        throw new EntityNotFoundException('');
+        throw new UserNotFoundException('User or email could not be found.');
     }
 
     private static function identityByUser(AuthView $user, string $username): UserIdentity
     {
         return new UserIdentity(
             $user->id,
-            $username,
+            $user->email ?: $username,
             $user->password_hash ?: '',
+            $user->name ?: $username,
             $user->role,
             $user->status
         );

@@ -50,14 +50,17 @@
                                     </div>
                                 </div>
                             </form>
-                            {#                            <hr/> #}
-                            {#                            <div class="row"> #}
-                            {#                                <div class="col-12"> #}
-                            {#                                    <a class="btn btn-block btn-github" href="{{ path('oauth.github') }}"> #}
-                            {#                                        <span>GitHub</span> #}
-                            {#                                    </a> #}
-                            {#                                </div> #}
-                            {#                            </div> #}
+                            <hr/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a class="btn btn-github m-1" href="{{ path('oauth.github') }}">
+                                        <span>GitHub</span>
+                                    </a>
+                                    <a class="btn btn-facebook" href="{{ path('oauth.facebook') }}">
+                                        <span>Facebook</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card col-md-5 text-white bg-primary py-5">

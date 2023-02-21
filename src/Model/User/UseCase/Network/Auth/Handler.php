@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Model\User\UseCase\Network\Auth;
 
 use App\Model\Flusher;
+use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Name;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Handler
 {

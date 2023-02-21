@@ -16,7 +16,7 @@ class Network
     #[ORM\Id]
     private string $id;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "networks")]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "networks")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     private User $user;
 
@@ -44,6 +44,11 @@ class Network
         return $this->network === $network;
     }
 
+    public function isFor(string $network, string $identity): bool
+    {
+        return $this->network === $network && $this->identity === $identity;
+    }
+
     public function getNetwork(): string
     {
         return $this->network;
@@ -53,5 +58,14 @@ class Network
     {
         return $this->identity;
     }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
 
 }

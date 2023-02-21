@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb my-0 ms-2">
+        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header">Profile</div>
+        <div class="card-body">
+            <table class="table table-bordered mb-0">
+                <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        {{ user.name.full }}
+                        <a href="{{ path('profile.name') }}" class="btn btn-sm btn-outline-info">
+                            <span class="cil-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>
+                        {{ user.email ? user.email.value : '' }}
+                        <a href="{{ path('profile.email') }}" class="btn btn-sm btn-outline-info">
+                            <span class="cil-pencil"></span>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Created</th>
+                    <td>{{ user.date|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                <tr>
+                    <th>Role</th>
+                    <td>{{ user_role(user.role.name) }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ user_status(user.status) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Networks</div>
+        <div class="card-body">
+            {% if user.networks %}
+                <table class="table table-bordered">
+                    <tbody>
+                    {% for network in user.networks %}
+                        <tr>
+                            <th>{{ network.network }}</th>
+                            <td>{{ network.identity }}</td>
+
+                            {% if user.email %}
+                                <td>
+                                    <form method="post"
+                                          action="{{ path('profile.oauth.detach', {'network': network.network, 'identity': network.identity}) }}"
+                                          onsubmit="return confirm('Are you sure?')">
+
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete' ~ network.identity) }}">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="cil-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            <a href="{{ path('profile.oauth.facebook') }}" class="btn btn-facebook">Attach Facebook</a>
+            <a href="{{ path('profile.oauth.github') }}" class="btn btn-github">Attach GitHub</a>
+        </div>
+    </div>
+
+{% endblock %}

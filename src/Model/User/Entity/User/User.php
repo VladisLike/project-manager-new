@@ -30,20 +30,20 @@ class User
     #[ORM\Column(type: "user_user_email")]
     private ?Email $email = null;
 
-    #[ORM\Column(name: "new_email", type: "user_user_email", nullable: true)]
-    private ?Email $newEmail = null;
-
-    #[ORM\Column(name: "new_email_token", type: "string", nullable: true)]
-    private ?string $newEmailToken = null;
-
-    #[ORM\Embedded(class: Name::class)]
-    private Name $name;
-
     #[ORM\Column(name: "password_hash", type: "string", nullable: true)]
     private ?string $passwordHash = null;
 
     #[ORM\Column(name: "confirm_token", type: "string", nullable: true)]
     private ?string $confirmToken = null;
+
+    #[ORM\Embedded(class: Name::class)]
+    private Name $name;
+
+    #[ORM\Column(name: "new_email", type: "user_user_email", nullable: true)]
+    private ?Email $newEmail = null;
+
+    #[ORM\Column(name: "new_email_token", type: "string", nullable: true)]
+    private ?string $newEmailToken = null;
 
     #[ORM\Embedded(class: ResetToken::class, columnPrefix: "reset_token_")]
     private ?ResetToken $resetToken = null;
@@ -57,12 +57,7 @@ class User
     #[ORM\OneToMany(mappedBy: "user", targetEntity: Network::class, cascade: ["persist"], orphanRemoval: true)]
     private array|Collection $networks;
 
-    /**
-     * @param Id $id
-     * @param DateTimeImmutable $date
-     * @param Name $name
-     */
-    private function __construct(Id $id, \DateTimeImmutable $date, Name $name)
+    public function __construct(Id $id, \DateTimeImmutable $date, Name $name)
     {
         $this->id = $id;
         $this->date = $date;
@@ -108,7 +103,7 @@ class User
         return $user;
     }
 
-    private function attachNetwork(string $network, string $identity): void
+    public function attachNetwork(string $network, string $identity): void
     {
         foreach ($this->networks as $existing) {
             if ($existing->isForNetwork($network)) {
@@ -120,6 +115,7 @@ class User
 
     public function detachNetwork(string $network, string $identity): void
     {
+        /** @var Network $existing */
         foreach ($this->networks as $existing) {
             if ($existing->isFor($network, $identity)) {
                 if (!$this->email && $this->networks->count() === 1) {
@@ -132,7 +128,7 @@ class User
         throw new \DomainException('Network is not attached.');
     }
 
-    public function requestPasswordReset(ResetToken $token, DateTimeImmutable $date): void
+    public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
     {
         if (!$this->isActive()) {
             throw new \DomainException('User is not active.');
@@ -143,11 +139,10 @@ class User
         if ($this->resetToken && !$this->resetToken->isExpiredTo($date)) {
             throw new \DomainException('Resetting is already requested.');
         }
-
         $this->resetToken = $token;
     }
 
-    public function passwordReset(DateTimeImmutable $date, string $hash): void
+    public function passwordReset(\DateTimeImmutable $date, string $hash): void
     {
         if (!$this->resetToken) {
             throw new \DomainException('Resetting is not requested.');
@@ -195,6 +190,14 @@ class User
         $this->email = $email;
     }
 
+    public function changeRole(Role $role): void
+    {
+        if ($this->role->isEqual($role)) {
+            throw new \DomainException('Role is already same.');
+        }
+        $this->role = $role;
+    }
+
     public function activate(): void
     {
         if ($this->isActive()) {
@@ -211,9 +214,6 @@ class User
         $this->status = self::STATUS_BLOCKED;
     }
 
-    /**
-     * @return bool
-     */
     public function isWait(): bool
     {
         return $this->status === self::STATUS_WAIT;
@@ -229,73 +229,26 @@ class User
         return $this->status === self::STATUS_BLOCKED;
     }
 
-    /**
-     * @return Id
-     */
     public function getId(): Id
     {
         return $this->id;
     }
 
-    /**
-     * @param Id $id
-     */
-    public function setId(Id $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return DateTimeImmutable
-     */
-    public function getDate(): DateTimeImmutable
+    public function getDate(): \DateTimeImmutable
     {
         return $this->date;
     }
 
-    /**
-     * @param DateTimeImmutable $date
-     */
-    public function setDate(DateTimeImmutable $date): void
-    {
-        $this->date = $date;
-    }
-
-    /**
-     * @return Email
-     */
-    public function getEmail(): Email
+    public function getEmail(): ?Email
     {
         return $this->email;
     }
 
-    /**
-     * @param Email $email
-     */
-    public function setEmail(Email $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPasswordHash(): string
+    public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
     }
 
-    /**
-     * @param string $passwordHash
-     */
-    public function setPasswordHash(string $passwordHash): void
-    {
-        $this->passwordHash = $passwordHash;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getConfirmToken(): ?string
     {
         return $this->confirmToken;
@@ -316,20 +269,19 @@ class User
         return $this->newEmailToken;
     }
 
-    /**
-     * @return string
-     */
+    public function getResetToken(): ?ResetToken
+    {
+        return $this->resetToken;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
-    }
-
-    /**
-     * @param string $status
-     */
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
     }
 
     /**
@@ -341,27 +293,6 @@ class User
     }
 
     /**
-     * @return ResetToken|null
-     */
-    public function getResetToken(): ?ResetToken
-    {
-        return $this->resetToken;
-    }
-
-    public function changeRole(Role $role): void
-    {
-        if ($this->role->isEqual($role)) {
-            throw new \DomainException('Role is already same.');
-        }
-        $this->role = $role;
-    }
-
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
-    /**
      * @ORM\PostLoad()
      */
     public function checkEmbeds(): void
@@ -370,5 +301,4 @@ class User
             $this->resetToken = null;
         }
     }
-
 }

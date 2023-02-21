@@ -22,8 +22,7 @@ final class Version20230221131727 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE user_users ADD new_email VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE user_users ADD new_email_token VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE user_users ADD name_first VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE user_users ADD name_last VARCHAR(255) NOT NULL');
+        $this->addSql('COMMENT ON COLUMN user_users.new_email IS \'(DC2Type:user_user_email)\'');
     }
 
     public function down(Schema $schema): void
@@ -32,7 +31,5 @@ final class Version20230221131727 extends AbstractMigration
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE user_users DROP new_email');
         $this->addSql('ALTER TABLE user_users DROP new_email_token');
-        $this->addSql('ALTER TABLE user_users DROP name_first');
-        $this->addSql('ALTER TABLE user_users DROP name_last');
     }
 }

@@ -12,8 +12,10 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/Model/User/Entity'
             - '../src/Kernel.php'
+
+    App\Model\User\Entity\User\UserRepository: ~
 
     App\Model\User\Service\Mailer\MailerSender:
         calls:
@@ -32,3 +34,10 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
             - '@Predis\Client'
+
+    Symfony\Component\HttpFoundation\Session\Session:
+        alias: Symfony\Component\HttpFoundation\Session\SessionInterface
+
+    App\Menu\SidebarMenu:
+        tags:
+            - { name: knp_menu.menu_builder, method: build, alias: sidebar }

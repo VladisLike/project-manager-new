@@ -9,6 +9,8 @@ class Command
 
     public string $identity;
 
+    public string $email;
+
     public string $firstName;
 
     public string $lastName;

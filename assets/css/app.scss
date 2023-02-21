@@ -1,8 +1,41 @@
-//@import "variables";
+@import "variables";
 @import "@coreui/icons";
 @import "simplebar/dist/simplebar.min.css";
 @import "~@coreui/coreui/scss/coreui";
 
 .wrapper {
   padding-left: var(--cui-sidebar-occupy-start, 0);
+}
+
+main {
+  .container {
+    padding: 80px 15px 0;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  & > * {
+    margin-right: 4px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.box {
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  th,
+  td {
+    vertical-align: middle;
+  }
 }

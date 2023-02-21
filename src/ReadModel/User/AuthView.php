@@ -6,16 +6,26 @@ namespace App\ReadModel\User;
 class AuthView
 {
     public string $id;
-    public string $email;
-    public string $password_hash;
+    public ?string $email = null;
+    public ?string $password_hash = null;
+    public string $name;
     public string $role;
     public string $status;
 
-    public function __construct(string $id, string $email, string $password_hash, string $role, string $status)
+    /**
+     * @param string $id
+     * @param string|null $email
+     * @param string|null $password_hash
+     * @param string $name
+     * @param string $role
+     * @param string $status
+     */
+    public function __construct(string $id, ?string $email, ?string $password_hash, string $name, string $role, string $status)
     {
         $this->id = $id;
         $this->email = $email;
         $this->password_hash = $password_hash;
+        $this->name = $name;
         $this->role = $role;
         $this->status = $status;
     }
