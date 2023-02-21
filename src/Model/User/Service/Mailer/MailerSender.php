@@ -24,6 +24,16 @@ class MailerSender implements MailerSenderInterface
     }
 
     /**
+     * @param string $mailSenderFrom
+     *
+     * @return void
+     */
+    public function setMailSenderFrom(string $mailSenderFrom): void
+    {
+        $this->mailSenderFrom = $mailSenderFrom;
+    }
+
+    /**
      * @param Email $email
      * @param string $token
      *
@@ -66,13 +76,24 @@ class MailerSender implements MailerSenderInterface
     }
 
     /**
-     * @param string $mailSenderFrom
+     * @param Email $email
+     * @param string $token
      *
      * @return void
+     * @throws TransportExceptionInterface
      */
-    public function setMailSenderFrom(string $mailSenderFrom): void
+    public function sendNewEmailConfirmToken(Email $email, string $token): void
     {
-        $this->mailSenderFrom = $mailSenderFrom;
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->mailSenderFrom, self::SENDER_NAME))
+            ->to($email->getValue())
+            ->subject('Email Confirmation')
+            ->htmlTemplate('mail/user/email.html.twig')
+            ->context([
+                'token' => $token
+            ]);
+
+        $this->mailer->send($email);
     }
 
 }

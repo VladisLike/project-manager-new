@@ -6,20 +6,16 @@ namespace App\Model\User\UseCase\SignUp\Request;
 use App\Model\Flusher;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
+use App\Model\User\Entity\User\Name;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Service\Mailer\MailerSenderInterface;
-use App\Model\User\Service\PasswordHasher;
-use App\Model\User\Service\SignUpConfirmTokenizer;
+use App\Model\User\Service\Password\PasswordHasher;
+use App\Model\User\Service\Tokenizer\SignUpConfirmTokenizer;
 
 class Handler
 {
 
-    private UserRepository $users;
-    private PasswordHasher $hasher;
-    private SignUpConfirmTokenizer $tokenizer;
-    private MailerSenderInterface $sender;
-    private Flusher $flusher;
 
     /**
      * @param UserRepository $users
@@ -29,17 +25,12 @@ class Handler
      * @param Flusher $flusher
      */
     public function __construct(
-        UserRepository         $users,
-        PasswordHasher         $hasher,
-        SignUpConfirmTokenizer $tokenizer,
-        MailerSenderInterface  $sender,
-        Flusher                $flusher)
+        private readonly UserRepository         $users,
+        private readonly PasswordHasher         $hasher,
+        private readonly SignUpConfirmTokenizer $tokenizer,
+        private readonly MailerSenderInterface  $sender,
+        private readonly Flusher                $flusher)
     {
-        $this->users = $users;
-        $this->hasher = $hasher;
-        $this->tokenizer = $tokenizer;
-        $this->sender = $sender;
-        $this->flusher = $flusher;
     }
 
 
@@ -54,6 +45,10 @@ class Handler
         $user = User::signUpByEmail(
             Id::next(),
             new \DateTimeImmutable('now'),
+            new Name(
+                $command->firstName,
+                $command->lastName
+            ),
             $email,
             $this->hasher->hash($command->password),
             $token = $this->tokenizer->generate()

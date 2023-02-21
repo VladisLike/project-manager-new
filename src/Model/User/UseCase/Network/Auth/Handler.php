@@ -5,18 +5,16 @@ namespace App\Model\User\UseCase\Network\Auth;
 
 use App\Model\Flusher;
 use App\Model\User\Entity\User\Id;
+use App\Model\User\Entity\User\Name;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 
 class Handler
 {
-    private UserRepository $users;
-    private Flusher $flusher;
-
-    public function __construct(UserRepository $users, Flusher $flusher)
+    public function __construct(
+        private readonly UserRepository $users,
+        private readonly Flusher        $flusher)
     {
-        $this->users = $users;
-        $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
@@ -28,6 +26,10 @@ class Handler
         $user = User::signUpByNetwork(
             Id::next(),
             new \DateTimeImmutable('now'),
+            new Name(
+                $command->firstName,
+                $command->lastName
+            ),
             $command->network,
             $command->identity
         );

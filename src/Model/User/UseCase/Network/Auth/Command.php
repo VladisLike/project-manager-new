@@ -9,6 +9,10 @@ class Command
 
     public string $identity;
 
+    public string $firstName;
+
+    public string $lastName;
+
     /**
      * @param string $network
      * @param string $identity

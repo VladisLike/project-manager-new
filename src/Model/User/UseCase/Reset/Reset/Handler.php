@@ -5,24 +5,20 @@ namespace App\Model\User\UseCase\Reset\Reset;
 
 use App\Model\Flusher;
 use App\Model\User\Entity\User\UserRepository;
-use App\Model\User\Service\PasswordHasher;
+use App\Model\User\Service\Password\PasswordHasher;
 
 class Handler
 {
-    private UserRepository $users;
-    private PasswordHasher $hasher;
-    private Flusher $flusher;
-
     /**
      * @param UserRepository $users
      * @param PasswordHasher $hasher
      * @param Flusher $flusher
      */
-    public function __construct(UserRepository $users, PasswordHasher $hasher, Flusher $flusher)
+    public function __construct(
+        private readonly UserRepository $users,
+        private readonly PasswordHasher $hasher,
+        private readonly Flusher        $flusher)
     {
-        $this->users = $users;
-        $this->hasher = $hasher;
-        $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void

@@ -16,9 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
 ])]
 class User
 {
-    private const STATUS_NEW = 'new';
-    private const STATUS_WAIT = 'wait';
+    public const STATUS_WAIT = 'wait';
     public const STATUS_ACTIVE = 'active';
+    public const STATUS_BLOCKED = 'blocked';
 
     #[ORM\Column(type: "user_user_id")]
     #[ORM\Id]
@@ -29,6 +29,15 @@ class User
 
     #[ORM\Column(type: "user_user_email")]
     private ?Email $email = null;
+
+    #[ORM\Column(name: "new_email", type: "user_user_email", nullable: true)]
+    private ?Email $newEmail = null;
+
+    #[ORM\Column(name: "new_email_token", type: "string", nullable: true)]
+    private ?string $newEmailToken = null;
+
+    #[ORM\Embedded(class: Name::class)]
+    private Name $name;
 
     #[ORM\Column(name: "password_hash", type: "string", nullable: true)]
     private ?string $passwordHash = null;
@@ -51,18 +60,29 @@ class User
     /**
      * @param Id $id
      * @param DateTimeImmutable $date
+     * @param Name $name
      */
-    private function __construct(Id $id, \DateTimeImmutable $date)
+    private function __construct(Id $id, \DateTimeImmutable $date, Name $name)
     {
         $this->id = $id;
         $this->date = $date;
+        $this->name = $name;
         $this->role = Role::user();
         $this->networks = new ArrayCollection();
     }
 
-    public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Email $email, string $hash, string $token): self
+    public static function create(Id $id, \DateTimeImmutable $date, Name $name, Email $email, string $hash): self
     {
-        $user = new self($id, $date);
+        $user = new self($id, $date, $name);
+        $user->email = $email;
+        $user->passwordHash = $hash;
+        $user->status = self::STATUS_ACTIVE;
+        return $user;
+    }
+
+    public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Name $name, Email $email, string $hash, string $token): self
+    {
+        $user = new self($id, $date, $name);
         $user->email = $email;
         $user->passwordHash = $hash;
         $user->confirmToken = $token;
@@ -80,9 +100,9 @@ class User
         $this->confirmToken = null;
     }
 
-    public static function signUpByNetwork(Id $id, \DateTimeImmutable $date, string $network, string $identity): self
+    public static function signUpByNetwork(Id $id, \DateTimeImmutable $date, Name $name, string $network, string $identity): self
     {
-        $user = new self($id, $date);
+        $user = new self($id, $date, $name);
         $user->attachNetwork($network, $identity);
         $user->status = self::STATUS_ACTIVE;
         return $user;
@@ -96,6 +116,20 @@ class User
             }
         }
         $this->networks->add(new Network($this, $network, $identity));
+    }
+
+    public function detachNetwork(string $network, string $identity): void
+    {
+        foreach ($this->networks as $existing) {
+            if ($existing->isFor($network, $identity)) {
+                if (!$this->email && $this->networks->count() === 1) {
+                    throw new \DomainException('Unable to detach the last identity.');
+                }
+                $this->networks->removeElement($existing);
+                return;
+            }
+        }
+        throw new \DomainException('Network is not attached.');
     }
 
     public function requestPasswordReset(ResetToken $token, DateTimeImmutable $date): void
@@ -125,9 +159,56 @@ class User
         $this->resetToken = null;
     }
 
-    public function isNew(): bool
+    public function requestEmailChanging(Email $email, string $token): void
     {
-        return $this->status === self::STATUS_NEW;
+        if (!$this->isActive()) {
+            throw new \DomainException('User is not active.');
+        }
+        if ($this->email && $this->email->isEqual($email)) {
+            throw new \DomainException('Email is already same.');
+        }
+        $this->newEmail = $email;
+        $this->newEmailToken = $token;
+    }
+
+    public function confirmEmailChanging(string $token): void
+    {
+        if (!$this->newEmailToken) {
+            throw new \DomainException('Changing is not requested.');
+        }
+        if ($this->newEmailToken !== $token) {
+            throw new \DomainException('Incorrect changing token.');
+        }
+        $this->email = $this->newEmail;
+        $this->newEmail = null;
+        $this->newEmailToken = null;
+    }
+
+    public function changeName(Name $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function edit(Email $email, Name $name): void
+    {
+        $this->name = $name;
+        $this->email = $email;
+    }
+
+    public function activate(): void
+    {
+        if ($this->isActive()) {
+            throw new \DomainException('User is already active.');
+        }
+        $this->status = self::STATUS_ACTIVE;
+    }
+
+    public function block(): void
+    {
+        if ($this->isBlocked()) {
+            throw new \DomainException('User is already blocked.');
+        }
+        $this->status = self::STATUS_BLOCKED;
     }
 
     /**
@@ -138,12 +219,14 @@ class User
         return $this->status === self::STATUS_WAIT;
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->status === self::STATUS_BLOCKED;
     }
 
     /**
@@ -216,6 +299,21 @@ class User
     public function getConfirmToken(): ?string
     {
         return $this->confirmToken;
+    }
+
+    public function getName(): Name
+    {
+        return $this->name;
+    }
+
+    public function getNewEmail(): ?Email
+    {
+        return $this->newEmail;
+    }
+
+    public function getNewEmailToken(): ?string
+    {
+        return $this->newEmailToken;
     }
 
     /**

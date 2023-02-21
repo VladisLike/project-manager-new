@@ -26,7 +26,7 @@ manager-clear:
 
 #Run app
 
-run: composer-install assets-install manager-dump manager-admin manager-ready
+run: composer-install assets-install manager-dump manager-fixture manager-ready
 
 composer-install:
 	docker exec -it crud_php-fpm composer install
@@ -35,10 +35,13 @@ assets-install:
 	docker-compose run --rm node npm rebuild node-sass
 
 manager-dump:
-	docker exec -it crud_php-fpm bin/console doctrine:migrations:migrate
+	docker exec -it crud_php-fpm php bin/console doctrine:migrations:migrate --no-interaction
 
-manager-admin:
-	docker exec -it crud_php-fpm bin/console admin:create
+manager-fixture:
+	docker exec -it crud_php-fpm php bin/console doctrine:fixtures:load --no-interaction
+
+#manager-admin:
+#	docker exec -it crud_php-fpm bin/console admin:create
 
 manager-ready:
 	docker run --rm -v ${PWD}/:/app --workdir=/app alpine touch .ready

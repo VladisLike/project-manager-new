@@ -24,5 +24,13 @@ interface MailerSenderInterface
      */
     public function sendConfirmToken(Email $email, string $token): void;
 
+    /**
+     * @param Email $email
+     * @param string $token
+     *
+     * @return void
+     */
+    public function sendNewEmailConfirmToken(Email $email, string $token): void;
+
 
 }

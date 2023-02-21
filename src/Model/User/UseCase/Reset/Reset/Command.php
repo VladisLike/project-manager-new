@@ -7,19 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Command
 {
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank()
-     */
+
+    #[Assert\NotBlank]
     public string $token;
 
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=6)
-     */
+    #[Assert\NotBlank, Assert\Length(min: 6)]
     public string $password;
 
     /**

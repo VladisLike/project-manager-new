@@ -7,14 +7,10 @@ use App\Model\Flusher;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Service\Mailer\MailerSenderInterface;
-use App\Model\User\Service\ResetTokenizer;
+use App\Model\User\Service\Tokenizer\ResetTokenizer;
 
 class Handler
 {
-    private UserRepository $users;
-    private ResetTokenizer $tokenizer;
-    private Flusher $flusher;
-    private MailerSenderInterface $sender;
 
     /**
      * @param UserRepository $users
@@ -22,12 +18,12 @@ class Handler
      * @param Flusher $flusher
      * @param MailerSenderInterface $sender
      */
-    public function __construct(UserRepository $users, ResetTokenizer $tokenizer, Flusher $flusher, MailerSenderInterface $sender)
+    public function __construct(
+        private readonly UserRepository        $users,
+        private readonly ResetTokenizer        $tokenizer,
+        private readonly Flusher               $flusher,
+        private readonly MailerSenderInterface $sender)
     {
-        $this->users = $users;
-        $this->tokenizer = $tokenizer;
-        $this->flusher = $flusher;
-        $this->sender = $sender;
     }
 
     public function handle(Command $command): void
