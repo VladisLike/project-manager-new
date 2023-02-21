@@ -80,10 +80,41 @@
                     {% endfor %}
                     </tbody>
                 </table>
+
+                {% for item in user.networks %}
+
+                    {% if item.network != 'facebook' %}
+                        <a class="btn btn-outline-dark" href="{{ path('profile.oauth.facebook') }}">
+                            <div class="icon me-1">
+                                <i class="cib-facebook"></i>
+                            </div>
+                            Attach Facebook
+                        </a>
+                    {% endif %}
+                    {#                    {% if item.network != 'github' %} #}
+                    {#                        <a class="btn btn-outline-dark me-1" href="{{ path('profile.oauth.github') }}"> #}
+                    {#                            <div class="icon me-1"> #}
+                    {#                                <i class="cib-github"></i> #}
+                    {#                            </div> #}
+                    {#                            Attach GitHub #}
+                    {#                        </a> #}
+                    {#                    {% endif %} #}
+                {% endfor %}
+            {% else %}
+                <a class="btn btn-outline-dark" href="{{ path('profile.oauth.facebook') }}">
+                    <div class="icon me-1">
+                        <i class="cib-facebook"></i>
+                    </div>
+                    Attach Facebook
+                </a>
+                {#                <a class="btn btn-outline-dark me-1" href="{{ path('profile.oauth.github') }}"> #}
+                {#                    <div class="icon me-1"> #}
+                {#                        <i class="cib-github"></i> #}
+                {#                    </div> #}
+                {#                    Attach GitHub #}
+                {#                </a> #}
             {% endif %}
 
-            <a href="{{ path('profile.oauth.facebook') }}" class="btn btn-facebook">Attach Facebook</a>
-            <a href="{{ path('profile.oauth.github') }}" class="btn btn-github">Attach GitHub</a>
         </div>
     </div>
 
