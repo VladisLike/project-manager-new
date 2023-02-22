@@ -12,7 +12,7 @@ class Command
     public string $id;
 
     #[Assert\NotBlank, Assert\Email]
-    public string $email;
+    public ?string $email = null;
 
     #[Assert\NotBlank]
     public string $firstName;
@@ -28,7 +28,7 @@ class Command
     public static function fromUser(User $user): self
     {
         $command = new self($user->getId()->getValue());
-        $command->email = $user->getEmail()?->getValue();
+        $command->email = $user->getEmail()?->getValue();;
         $command->firstName = $user->getName()->getFirst();
         $command->lastName = $user->getName()->getLast();
         return $command;

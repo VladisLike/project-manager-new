@@ -5,8 +5,8 @@ namespace App\ReadModel\User\Filter;
 
 use App\Model\User\Entity\User\Role;
 use App\Model\User\Entity\User\User;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

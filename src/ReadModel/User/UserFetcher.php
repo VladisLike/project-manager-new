@@ -153,21 +153,21 @@ class UserFetcher
             ->from('user_users');
 
         if ($filter->name) {
-            $qb->andWhere($qb->expr()->like('LOWER(CONCAT(name_first, \' \', name_last))', ':name'));
-            $qb->setParameter(':name', '%' . mb_strtolower($filter->name) . '%');
+            $like = '%' . mb_strtolower($filter->name) . '%';
+            $qb->andWhere($qb->expr()->like('LOWER(CONCAT(name_first, \' \', name_last))', "'$like'"));
         }
 
         if ($filter->email) {
-            $qb->andWhere($qb->expr()->like('LOWER(email)', ':email'));
-            $qb->setParameter(':email', '%' . mb_strtolower($filter->email) . '%');
+            $like = '%' . mb_strtolower($filter->email) . '%';
+            $qb->andWhere($qb->expr()->like('LOWER(email)', "'$like'"));
         }
 
         if ($filter->status) {
-            $qb->andWhere("status = $filter->status");
+            $qb->andWhere("status = '$filter->status'");
         }
 
         if ($filter->role) {
-            $qb->andWhere("role = $filter->role");
+            $qb->andWhere("role = '$filter->role'");
         }
 
         if (!\in_array($sort, ['date', 'name', 'email', 'role', 'status'], true)) {

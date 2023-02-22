@@ -25,6 +25,19 @@ class SidebarMenu
             ->setAttribute('class', 'nav-item')
             ->setLinkAttribute('class', 'nav-link');
 
+        $menu->addChild('Control')->setAttribute('class', 'nav-title');
+
+        if ($this->auth->isGranted('ROLE_MANAGE_USERS')) {
+            $menu->addChild('Users', ['route' => 'users'])
+                ->setExtra('icon', 'nav-icon cil-people')
+                ->setExtra('routes', [
+                    ['route' => 'users'],
+                    ['pattern' => '/^users\..+/']
+                ])
+                ->setAttribute('class', 'nav-item')
+                ->setLinkAttribute('class', 'nav-link');
+        }
+
         $menu->addChild('Profile', ['route' => 'profile'])
             ->setExtra('icon', 'nav-icon cil-user')
             ->setExtra('routes', [
