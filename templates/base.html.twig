@@ -27,8 +27,12 @@
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
 <div class="wrapper d-flex flex-column min-vh-100 bg-light">
-    <header class="header header-fi mb-4">
+    <header class="header header-sticky mb-4">
         <div class="container-fluid">
+            <button class="header-toggler px-md-0 me-md-3" type="button"
+                    onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                <i class="icon icon-lg icon-2xl cil-menu"></i>
+            </button>
             <div class="header-toggler px-md-0 me-md-3"></div>
             <ul class="header-nav ms-3">
                 <li class="nav-item dropdown">

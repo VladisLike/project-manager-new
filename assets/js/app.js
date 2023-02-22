@@ -1,7 +1,9 @@
 require('../css/app.scss');
 
-require('@coreui/coreui')
-require('simplebar/dist/simplebar.min')
+// require('@coreui/coreui')
+import * as coreui from '@coreui/coreui';
+
+window.coreui = coreui;
 
 
 
