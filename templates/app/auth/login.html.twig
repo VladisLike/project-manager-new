@@ -20,16 +20,18 @@
                             <form method="post">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 mt-3">
                                     <span class="input-group-text">
-                                        <i class="cil-envelope-closed"></i>
+                                        <i class="icon icon-lg cil-envelope-closed"></i>
                                     </span>
                                     <input class="form-control" type="email" name="email" value="{{ last_username }}"
                                            placeholder="Email"/>
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text"><i class="cil-lock-locked"></i></span>
+                                    <span class="input-group-text">
+                                        <i class="icon icon-lg cil-lock-locked"></i>
+                                    </span>
                                     <input class="form-control" type="password" name="password" placeholder="Password">
                                 </div>
 
@@ -42,11 +44,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <button class="btn btn-primary px-4" type="submit">Login</button>
+                                        <button class="btn btn-lg btn-outline-dark px-3 py-1" type="submit">Login
+                                        </button>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <a class="btn btn-link px-0" href="{{ path('auth.reset') }}">Forgot
-                                            password?</a>
+                                        <a class="btn btn-link px-0" href="{{ path('auth.reset') }}">
+                                            Forgot password?
+                                        </a>
                                     </div>
                                 </div>
                             </form>
@@ -69,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card col-md-5 text-white bg-primary py-5">
+                    <div class="card col-md-5 text-white py-5" style="background: #3c4b64">
                         <div class="card-body text-center">
                             <div>
                                 <h2>Sign up</h2>

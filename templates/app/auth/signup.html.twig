@@ -12,8 +12,8 @@
                         <div class="container">
                             <div class="row text-end">
                                 <div class="col">
-                                    <a class="btn btn-primary px-4" href="{{ path('home') }}">
-                                        <span>Back</span>
+                                    <a class="btn btn-outline-dark" href="{{ path('home') }}">
+                                        <span><i class="icon icon-xl cil-arrow-thick-left"></i></span>
                                     </a>
                                 </div>
                             </div>
@@ -26,7 +26,7 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">
-                                <i class="cil-envelope-open"></i>
+                                <i class="icon icon-lg cil-notes"></i>
                             </span>
                             {{ form_widget(form.firstName, {'attr': {'placeholder': 'First Name'}}) }}
                             {{ form_errors(form.firstName) }}
@@ -34,7 +34,7 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">
-                                <i class="cil-envelope-open"></i>
+                                <i class="icon icon-lg cil-notes"></i>
                             </span>
                             {{ form_widget(form.lastName, {'attr': {'placeholder': 'Last Name'}}) }}
                             {{ form_errors(form.lastName) }}
@@ -42,15 +42,15 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">
-                                <i class="cil-envelope-open"></i>
+                                <i class="icon icon-lg cil-envelope-open"></i>
                             </span>
                             {{ form_widget(form.email, {'attr': {'placeholder': 'Email'}}) }}
                             {{ form_errors(form.email) }}
                         </div>
 
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 mt-3">
                             <span class="input-group-text">
-                                <i class="cil-lock-locked"></i>
+                                <i class="icon icon-lg cil-lock-locked"></i>
                             </span>
                             {{ form_widget(form.password, {'attr': {'placeholder': 'Password'}}) }}
                             {{ form_errors(form.password) }}
@@ -58,7 +58,8 @@
                         <div class="container">
                             <div class="row text-center">
                                 <div class="col">
-                                    <button class="btn btn-block btn-lg btn-success" type="submit">Create Account
+                                    <button class="btn btn-block btn-lg btn-outline-dark" type="submit">
+                                        Create Account
                                     </button>
 
                                 </div>
@@ -70,11 +71,17 @@
                     <div class="card-footer p-4">
                         <div class="row">
                             <div class="col-12">
-                                <a class="btn btn-block btn-github" href="{{ path('oauth.github') }}">
-                                    <span>GitHub</span>
+                                <a class="btn btn-outline-dark me-1" href="{{ path('oauth.github') }}">
+                                    <div class="icon me-1">
+                                        <i class="cib-github"></i>
+                                    </div>
+                                    GitHub
                                 </a>
-                                <a class="btn btn-block btn-facebook" href="{{ path('oauth.facebook') }}">
-                                    <span>Facebook</span>
+                                <a class="btn btn-outline-dark" href="{{ path('oauth.facebook') }}">
+                                    <div class="icon me-1">
+                                        <i class="cib-facebook"></i>
+                                    </div>
+                                    Facebook
                                 </a>
                             </div>
                         </div>

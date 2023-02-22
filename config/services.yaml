@@ -13,9 +13,12 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Model/User/Entity'
+            - '../src/Model/Work/Entity'
             - '../src/Kernel.php'
 
     App\Model\User\Entity\User\UserRepository: ~
+    App\Model\Work\Entity\Members\Group\GroupRepository: ~
+    App\Model\Work\Entity\Members\Member\MemberRepository: ~
 
     App\Model\User\Service\Mailer\MailerSender:
         calls:
