@@ -14,15 +14,17 @@
 
     <div class="sidebar-brand d-none d-md-flex">
         <div class="sidebar-brand-full" alt="Logo">
-            <span class="me-1"><i class="cib-medium icon icon-xl"></i></span>
+            <span class="me-1">
+                <a href="{{ path('home') }}" class="link-secondary"><i class="cib-medium icon icon-xl"></i></a>
+            </span>
             MANAGERN
         </div>
         <div class="sidebar-brand-narrow" alt="Logo">
-            <span><i class="cib-medium icon icon-xl"></i></span>
+            <span class="me-1">
+                <a href="{{ path('home') }}" class="link-secondary"><i class="cib-medium icon icon-xl"></i></a>
+            </span>
         </div>
     </div>
-
-
     {{ knp_menu_render('sidebar', {'currentClass': 'active'}) }}
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
@@ -38,7 +40,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                        aria-expanded="false">
-                        {{ app.user.username }}
+                        {{ app.user.display }}
                         {#                    <div class="avatar avatar-md"> #}
                         {#                        <img class="avatar-img" #}
                         {#                             src="https://coreui.io/demos/bootstrap/4.2/free/assets/img/avatars/2.jpg" #}

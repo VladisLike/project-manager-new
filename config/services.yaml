@@ -19,6 +19,7 @@ services:
     App\Model\User\Entity\User\UserRepository: ~
     App\Model\Work\Entity\Members\Group\GroupRepository: ~
     App\Model\Work\Entity\Members\Member\MemberRepository: ~
+    App\Model\Work\Entity\Projects\Project\ProjectRepository: ~
 
     App\Model\User\Service\Mailer\MailerSender:
         calls:
@@ -44,3 +45,6 @@ services:
     App\Menu\SidebarMenu:
         tags:
             - { name: knp_menu.menu_builder, method: build, alias: sidebar }
+
+    App\Menu\Work\ProjectMenu:
+        tags: [ { name: knp_menu.menu_builder, method: build, alias: work_project } ]

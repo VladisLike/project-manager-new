@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Model\Work\UseCase\Projects\Project\Remove;
+
+use App\Model\Flusher;
+use App\Model\Work\Entity\Projects\Project\Id;
+use App\Model\Work\Entity\Projects\Project\ProjectRepository;
+
+class Handler
+{
+    public function __construct(
+        private readonly ProjectRepository $projects,
+        private readonly Flusher           $flusher)
+    {
+    }
+
+    public function handle(Command $command): void
+    {
+        $project = $this->projects->get(new Id($command->id));
+
+        $this->projects->remove($project);
+
+        $this->flusher->flush();
+    }
+}
