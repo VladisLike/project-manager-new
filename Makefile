@@ -2,6 +2,10 @@ down: docker-down
 up: docker-up
 init: docker-down-clear manager-clear docker-pull docker-build docker-up run
 exec_bash: docker-exec-bash
+test: manager-test
+
+manager-test:
+	docker exec -it crud_php-fpm php bin/phpunit
 
 docker-up:
 	docker-compose up -d

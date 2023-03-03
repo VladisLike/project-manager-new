@@ -10,7 +10,7 @@ class StatusType extends StringType
 {
     public const NAME = 'work_projects_project_status';
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
     {
         return $value instanceof Status ? $value->getName() : $value;
     }
